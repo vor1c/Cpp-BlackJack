@@ -19,5 +19,5 @@ add_executable(Cpp_Kartenspiel
         Karte.h
         Kartenspiel.cpp
         Kartenspiel.h
-        test_kartenspiel.cpp)
+        test_kartenspiel.cpp UserManager.cpp UserManager.h)
         #Sauaufdrahn.cpp)

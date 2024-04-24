@@ -6,34 +6,25 @@
 #include "Karte.h"
 #include "Deck.h"
 #include "Hand.h"
+#include "UserManager.h"
 
 // Funktion zur Berechnung der Punktzahl einer Hand
 int punktzahlBerechnen(const Hand& hand) {
     int summe = 0;
     int asse = 0;
-
-    // Iteriere über die Karten in der Hand
     for (const auto& karte : hand) {
-        // Zugriff auf den Wert jeder Karte
-        int wert = karte.wert(); // Verwenden der wert()-Methode der Karte-Klasse
-
-        // Behandlung von Assen
+        int wert = karte.wert();
         if (wert == 11) {
             asse++;
-            summe += 11; // Ass wird vorerst als 11 gezählt
-        }
-            // Behandlung anderer Karten
-        else {
+            summe += 11;
+        } else {
             summe += wert;
         }
     }
-
-    // Korrektur, falls Ass als 11 zu viel wäre
     while (summe > 21 && asse > 0) {
         summe -= 10;
         asse--;
     }
-
     return summe;
 }
 
@@ -51,9 +42,7 @@ std::string handToString(const Hand& hand, bool zeigeAlleKarten) {
     return result;
 }
 
-// Funktion zur Berechnung der Hand des Dealers
 void dealerSpielt(Hand& dealerHand, Deck& deck) {
-    // Dealer zieht Karten, solange die Punktzahl kleiner als 17 ist
     while (punktzahlBerechnen(dealerHand) < 17) {
         dealerHand.hinzufuegen(deck.nehmen());
     }
@@ -61,61 +50,94 @@ void dealerSpielt(Hand& dealerHand, Deck& deck) {
 
 std::string punktzahlZuString(int punkte) {
     if (punkte > 21) {
-        return " (Bust)";
+        return " (Über 21)";
     } else {
         return " (Punktzahl: " + std::to_string(punkte) + ")";
     }
 }
 
 int main() {
-    std::cout << "Willkommen beim Blackjack!" << std::endl;
+    std::vector<User> users;
+    if (!loadUsers("points.voric", users)) {
+        std::cerr << "Fehler beim Laden der Benutzerdaten. Programm wird beendet.\n";
+        return 1;
+    }
 
-    // Initialisierung des Decks und Mischens
-    Franzoesisch deck;
-    deck.mischen();
+    User* currentUser = nullptr;
+    while (!currentUser) {
+        std::cout << "1. Anmelden\n2. Registrieren\nWähle eine Option: ";
+        int option;
+        std::cin >> option;
 
-    // Spieler und Dealer initialisieren
-    Hand spielerHand, dealerHand;
-    spielerHand.hinzufuegen(deck.nehmen());
-    dealerHand.hinzufuegen(deck.nehmen());
-    spielerHand.hinzufuegen(deck.nehmen());
-    dealerHand.hinzufuegen(deck.nehmen());
-
-    std::cout << "Deine Hand: " << handToString(spielerHand, true) << punktzahlZuString(punktzahlBerechnen(spielerHand)) << std::endl;
-    std::cout << "Dealer zeigt: " << handToString(dealerHand, false) << std::endl;
-
-    // Spieler zieht Karten
-    while (true) {
-        char choice;
-        std::cout << "Moechtest du eine weitere Karte ziehen? (j/n): ";
-        std::cin >> choice;
-        if (choice == 'j') {
-            spielerHand.hinzufuegen(deck.nehmen());
-            std::cout << "Deine Hand: " << handToString(spielerHand, true) << punktzahlZuString(punktzahlBerechnen(spielerHand)) << std::endl;
-            if (punktzahlBerechnen(spielerHand) > 21) {
-                std::cout << "Du hast verloren! (ueber 21)" << std::endl;
-                return 0;
-            }
+        if (option == 1) {
+            currentUser = authenticateUser(users);
+        } else if (option == 2) {
+            currentUser = registerUser(users);
         } else {
-            break;
+            std::cout << "Ungültige Eingabe, bitte erneut versuchen.\n";
+        }
+
+        if (!currentUser) {
+            std::cout << "Anmeldung fehlgeschlagen, bitte erneut versuchen.\n";
         }
     }
 
-    // Dealer spielt
-    dealerSpielt(dealerHand, deck);
+    std::cout << "Willkommen " << currentUser->username << "!\n";
 
-    std::cout << "Dealer's Hand: " << handToString(dealerHand, true) << punktzahlZuString(punktzahlBerechnen(dealerHand)) << std::endl;
+    while (true) {
+        int bet = getBetAmount(*currentUser);
+        Franzoesisch deck;
+        deck.mischen();
+        Hand spielerHand, dealerHand;
+        spielerHand.hinzufuegen(deck.nehmen());
+        dealerHand.hinzufuegen(deck.nehmen());
+        spielerHand.hinzufuegen(deck.nehmen());
+        dealerHand.hinzufuegen(deck.nehmen());
 
-    // Gewinner ermitteln
-    int spielerPunkte = punktzahlBerechnen(spielerHand);
-    int dealerPunkte = punktzahlBerechnen(dealerHand);
-    if (dealerPunkte > 21 || spielerPunkte > dealerPunkte) {
-        std::cout << "Herzlichen Glueckwunsch! Du hast gewonnen!" << std::endl;
-    } else if (dealerPunkte > spielerPunkte) {
-        std::cout << "Dealer gewinnt!" << std::endl;
-    } else {
-        std::cout << "Unentschieden!" << std::endl;
+        std::cout << "Deine Hand: " << handToString(spielerHand, true) << punktzahlZuString(punktzahlBerechnen(spielerHand)) << std::endl;
+        std::cout << "Dealer zeigt: " << handToString(dealerHand, false) << std::endl;
+
+        char choice;
+        while (true) {
+            std::cout << "Möchtest du eine weitere Karte ziehen? (j/n): ";
+            std::cin >> choice;
+            if (choice == 'j') {
+                spielerHand.hinzufuegen(deck.nehmen());
+                std::cout << "Deine Hand: " << handToString(spielerHand, true) << punktzahlZuString(punktzahlBerechnen(spielerHand)) << std::endl;
+                if (punktzahlBerechnen(spielerHand) > 21) {
+                    std::cout << "Überzogen! Du hast verloren.\n";
+                    currentUser->cash -= bet;
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        if (punktzahlBerechnen(spielerHand) <= 21) {
+            dealerSpielt(dealerHand, deck);
+            std::cout << "Dealer's Hand: " << handToString(dealerHand, true) << punktzahlZuString(punktzahlBerechnen(dealerHand)) << std::endl;
+        }
+
+        int spielerPunkte = punktzahlBerechnen(spielerHand);
+        int dealerPunkte = punktzahlBerechnen(dealerHand);
+        if (dealerPunkte > 21 || spielerPunkte > dealerPunkte) {
+            std::cout << "Glückwunsch! Du hast gewonnen!\n";
+            currentUser->cash += bet * 2;
+        } else if (dealerPunkte > spielerPunkte) {
+            std::cout << "Dealer gewinnt!\n";
+            currentUser->cash -= bet;
+        } else {
+            std::cout << "Unentschieden!\n";
+        }
+
+        saveUsers("points.voric", users);
+
+        std::cout << "Möchtest du eine weitere Runde spielen? (j/n): ";
+        std::cin >> choice;
+        if (choice != 'j') break; // Verlässt die Spielschleife, wenn der Benutzer keine weitere Runde spielen möchte
     }
 
+    std::cout << "Abmeldung. Danke fürs Spielen!\n";
     return 0;
 }
