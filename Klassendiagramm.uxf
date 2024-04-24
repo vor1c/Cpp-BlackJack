@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <zoom_level>12</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>384</x>
+      <y>36</y>
+      <w>252</w>
+      <h>420</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;ENUM&gt;&gt;
+Symbol
+--
+EINS
+ZWEI
+...
+ZWOELF
+BUBE
+DAME
+KOENIG
+ASS
+OBER
+UNTER
+SAU
+PLUS2
+PLUS4
+JOKER
+RICHTUNGSWECHSEL
+AUSSETZEN
+FARBEWAEHLEN</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>240</y>
+      <w>252</w>
+      <h>312</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;ENUM&gt;&gt;
+Farbe
+--
+SCHELL
+EICHEL
+LAUB
+HERZ
+KARO
+PIK
+KREUZ
+ROT
+BLAU
+GELB
+GRUEN
+UNBESTIMMT</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>72</x>
+      <y>36</y>
+      <w>300</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>Karte
+--
+- _zahl: Symbol
+- _farbe: Farbe
+--
++ Karten(zahl: Symbol, farbe: Farbe)
+--
++ zahl(): Symbol
++ farbe(): Farbe</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>84</x>
+      <y>600</y>
+      <w>324</w>
+      <h>204</h>
+    </coordinates>
+    <panel_attributes>Deck (vector)
+--
+
+--
+Deck(farben: Farbe[], symbole: Symbol[])
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>444</x>
+      <y>600</y>
+      <w>252</w>
+      <h>204</h>
+    </coordinates>
+    <panel_attributes>Ablegestapel (Stack)
+--
+
+--
+
+--
+hinzufuegen()
+anschauen()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>708</x>
+      <y>600</y>
+      <w>252</w>
+      <h>204</h>
+    </coordinates>
+    <panel_attributes>Hand (vector)
+--
+
+--
+
+--
+nehmen()
+hinzufuegen()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>972</x>
+      <y>600</y>
+      <w>252</w>
+      <h>204</h>
+    </coordinates>
+    <panel_attributes>Abhebestapel (Queue)
+--
+
+--
+
+--
+hinzufuegen()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>720</x>
+      <y>204</y>
+      <w>252</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>Kartencontainer
+--
+
+--
+
+--
+empty()
+size()
+mischen()
+sortieren()
+hinzufuegen()
+nehmen()
+alleKarten()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>864</x>
+      <y>432</y>
+      <w>36</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>924</x>
+      <y>432</y>
+      <w>216</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0;160.0;80.0;160.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>540</x>
+      <y>432</y>
+      <w>312</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>240.0;10.0;240.0;110.0;10.0;110.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>276</x>
+      <y>432</y>
+      <w>516</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>410.0;10.0;410.0;90.0;10.0;90.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>720</x>
+      <y>0</y>
+      <w>252</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>deque
+--
+
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>828</x>
+      <y>120</y>
+      <w>36</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>24</x>
+      <y>876</y>
+      <w>252</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>Doppeldeutsch
+--
+
+--
+Doppeldeutsch()
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>204</x>
+      <y>792</y>
+      <w>36</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>312</x>
+      <y>876</y>
+      <w>252</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>Franzoesisch
+--
+
+--
+Franzoesisch()
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>792</y>
+      <w>36</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+</diagram>
