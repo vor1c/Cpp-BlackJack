@@ -1,7 +1,3 @@
-//
-// Created by voric on 24.04.2024.
-//
-
 #include "UserManager.h"
 #include <fstream>
 #include <sstream>
@@ -10,8 +6,14 @@
 bool loadUsers(const std::string& filename, std::vector<User>& users) {
     std::ifstream file(filename);
     if (!file) {
-        std::cerr << "Unable to open file.\n";
-        return false;
+        std::cerr << "Unable to open file. Attempting to create a new one.\n";
+        std::ofstream outFile(filename); // Create an empty file if it doesn't exist.
+        if (!outFile) {
+            std::cerr << "Failed to create the file.\n";
+            return false;
+        }
+        outFile.close();
+        return true; // Return true as the file is now created, although it's empty.
     }
 
     std::string line;
@@ -30,7 +32,7 @@ bool loadUsers(const std::string& filename, std::vector<User>& users) {
 bool saveUsers(const std::string& filename, const std::vector<User>& users) {
     std::ofstream file(filename);
     if (!file) {
-        std::cerr << "Unable to open file.\n";
+        std::cerr << "Unable to open file for saving. Check permissions or disk space.\n";
         return false;
     }
 
@@ -53,6 +55,7 @@ User* authenticateUser(std::vector<User>& users) {
             return &user;
         }
     }
+    std::cerr << "Authentication failed. Username or password incorrect.\n";
     return nullptr;
 }
 
