@@ -7,11 +7,13 @@ bool loadUsers(const std::string& filename, std::vector<User>& users) {
     std::ifstream file(filename);
     if (!file) {
         std::cerr << "Unable to open file. Attempting to create a new one.\n";
-        std::ofstream outFile(filename); // Create an empty file if it doesn't exist.
+        // Attempt to create the file
+        std::ofstream outFile(filename);
         if (!outFile) {
-            std::cerr << "Failed to create the file.\n";
+            std::cerr << "Failed to create the file. Please check permissions or disk space.\n";
             return false;
         }
+        std::cout << "File successfully created.\n";  // Feedback that file was created
         outFile.close();
         return true; // Return true as the file is now created, although it's empty.
     }
@@ -84,7 +86,7 @@ User* registerUser(std::vector<User>& users) {
 int getBetAmount(User& user) {
     int bet;
     do {
-        std::cout << "Enter your bet (min 10, available cash " << user.cash << "): ";
+        std::cout << "Enter your bet (min 10, available cash " + std::to_string(user.cash) + "): ";
         std::cin >> bet;
     } while (bet < 10 || bet > user.cash);
     return bet;
