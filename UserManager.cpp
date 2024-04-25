@@ -57,21 +57,21 @@ User* authenticateUser(std::vector<User>& users) {
             return &user;
         }
     }
-    std::cerr << "Authentication failed. Username or password incorrect.\n";
+    std::cerr << "Anmeldung hat nicht funktioniert.\n";
     return nullptr;
 }
 
 User* registerUser(std::vector<User>& users) {
     std::string username, password;
-    std::cout << "Choose a username: ";
+    std::cout << "Wähle einen Benutzernamen: ";
     std::cin >> username;
-    std::cout << "Choose a password: ";
+    std::cout << "Wähle ein Passwort: ";
     std::cin >> password;
 
     // Check if username already exists
     for (auto& user : users) {
         if (user.username == username) {
-            std::cerr << "Username already exists.\n";
+            std::cerr << "Benutzername existiert bereits.\n";
             return nullptr;
         }
     }
